@@ -13,7 +13,7 @@ help:
 	@echo "  psql					PostgreSQL shell"
 	@echo "  logs-odoo				Logs odoo container"
 	@echo "  logs-db				Logs db container"
-	@echo "  addons <addon_name>	restart instance and upgrade addon"
+	@echo "  addon-<addon_name>	restart instance and upgrade addon"
 
 start:
 	$(DOCKER_COMPOSE) up -d
