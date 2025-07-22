@@ -1,4 +1,5 @@
 from odoo import models, fields,api
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
@@ -52,3 +53,22 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = delta.days
             else:
                 offer.validity = offer.date_deadline - fields.Date.today().days
+
+    def action_accept(self):
+        for offer in self:
+            if offer.property_id.state == 'sold':
+                raise UserError("Cannot accept an offer for a property that is already sold.")
+            else:
+                offer.status = 'accepted'
+                offer.property_id.state = 'sold'
+                offer.property_id.selling_price = offer.price
+                offer.property_id.buyer_id = offer.partner_id
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            if offer.property_id.state == 'sold':
+                raise UserError("Cannot refuse an offer for a property that is already sold.")
+            else:
+                offer.status = 'refused'
+        return True

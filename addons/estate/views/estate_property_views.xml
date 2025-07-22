@@ -50,6 +50,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <div class="pb-3">
@@ -82,11 +86,6 @@
                                 <field name="total_area" string="Total Area (sqm)" />
                             </group>
                         </page>
-                        <page  string="Active">
-                            <group>
-                                <field name="active"/>
-                            </group>
-                        </page>
                         <page  string="Offers">
                             <field name="offer_ids"/>
                         </page>
@@ -94,6 +93,11 @@
                             <group>
                                 <field name="user_id" string="Salesman"/>
                                 <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
+                         <page  string="Active">
+                            <group>
+                                <field name="active"/>
                             </group>
                         </page>
                     </notebook>
