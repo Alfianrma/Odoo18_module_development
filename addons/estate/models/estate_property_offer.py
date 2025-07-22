@@ -1,5 +1,6 @@
 from odoo import models, fields,api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_is_zero,float_compare
 from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
@@ -72,3 +73,8 @@ class EstatePropertyOffer(models.Model):
             else:
                 offer.status = 'refused'
         return True
+    
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The offer price must be positive.'),
+        ('check_validity', 'CHECK(validity > 0)', 'The offer validity must be positive.'),
+    ]
