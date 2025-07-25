@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     price  = fields.Float()
     status = fields.Selection(
@@ -78,3 +79,9 @@ class EstatePropertyOffer(models.Model):
         ('check_price', 'CHECK(price > 0)', 'The offer price must be positive.'),
         ('check_validity', 'CHECK(validity > 0)', 'The offer validity must be positive.'),
     ]
+
+    @api.constrains('price', 'property_id')
+    def _check_price_property(self):
+        for offer in self:
+            if float_compare(offer.price, offer.property_id.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("Selling price cannot be less than 90% of expected price.")
